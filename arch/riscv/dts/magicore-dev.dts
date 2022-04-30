@@ -1,0 +1,64 @@
+/dts-v1/;
+
+/ {
+    #address-cells = <1>;
+    #size-cells = <1>;
+    compatible = "bluelogic,magicore-dev";
+    model = "bluelogic,magicore-dev";
+
+    chosen {
+        bootargs = "console=ttyS0,115200 earlyprintk";
+        stdout-path = "serial0";
+    };
+
+    cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		timebase-frequency = <76923077>;
+
+		cpu0: cpu@0 {
+			device_type = "cpu";
+			compatible = "bluelogic,magicore", "riscv";
+			reg = <0>;
+			riscv,isa = "rv64im";
+
+			cpu0_intc: interrupt-controller {
+				#interrupt-cells = <1>;
+				compatible = "riscv,cpu-intc";
+				interrupt-controller;
+			};
+		};
+    };
+    
+    ddr0: memory@80000000 {
+        device_type = "memory";
+        reg = <0x1c000000 0x4000000>;
+    };
+
+    soc {
+        #address-cells = <1>;
+        #size-cells = <1>;
+        plic0: interrupt-controller@ff010200 {
+            compatible = "sifive,plic-1.0.0";
+            #interrupt-cells = <1>;
+            interrupt-controller;
+            reg = <0xff010200 0x100>;
+            riscv,ndev = <32>;
+            interrupts-extended = <&cpu0_intc 11>;
+            u-boot,dm-pre-reloc;
+        };
+		clint: clint@ff020000 {
+			compatible = "riscv,clint0";
+			interrupts-extended = <&cpu0_intc 3 &cpu0_intc 7>;
+			reg = <0x0 0xff020000 0x0 0x10000>;
+            u-boot,dm-pre-reloc;
+		};
+    };
+    uart0: serial@ff010000 {
+        compatible = "vexriscv,uart0";
+        reg = <0xff010000 0x100>;
+        interrupt-parent = <&plic0>;
+        interrupts = <17>;
+        u-boot,dm-pre-reloc;
+    };
+};

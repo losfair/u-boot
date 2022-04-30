@@ -530,6 +530,13 @@ config DEBUG_UART_NS16550_CHECK_ENABLED
 	  Note that this does not work for every ns16550-compatible UART and
 	  so has to be enabled carefully or you might notice lost characters.
 
+config DEBUG_UART_VEXRISCV
+	bool "Vexriscv UART"
+	help
+	  Select this to enable a debug UART using the serial_vexriscv driver. You
+	  will need to provide parameters to make this work. The driver will
+	  be available until the real driver-model serial is running.
+
 config ALTERA_JTAG_UART
 	bool "Altera JTAG UART support"
 	depends on DM_SERIAL
@@ -934,6 +941,12 @@ config XEN_SERIAL
 	help
 	  If built without DM support, then requires Xen
 	  to be built with CONFIG_VERBOSE_DEBUG.
+
+config VEXRISCV_SERIAL
+	bool "Vexriscv UART support"
+	depends on DM_SERIAL
+	help
+	  This driver supports the Vexriscv UART. If unsure say N.
 
 choice
 	prompt "Console port"
