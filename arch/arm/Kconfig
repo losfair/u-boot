@@ -2151,6 +2151,9 @@ config SYS_KWD_CONFIG
 	  Path within the source directory to the kwbimage.cfg file to use
 	  when packaging the U-Boot image for use.
 
+config MAGLEV_PV
+	bool "Maglev paravirtualization support"
+
 source "arch/arm/mach-apple/Kconfig"
 
 source "arch/arm/mach-aspeed/Kconfig"

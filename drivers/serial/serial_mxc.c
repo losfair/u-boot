@@ -7,8 +7,8 @@
 #include <dm.h>
 #include <errno.h>
 #include <watchdog.h>
-#include <asm/arch/imx-regs.h>
-#include <asm/arch/clock.h>
+#include <asm/arch-mx6/imx-regs.h>
+#include <asm/arch-mx6/clock.h>
 #include <asm/global_data.h>
 #include <dm/platform_data/serial_mxc.h>
 #include <serial.h>
@@ -303,7 +303,7 @@ __weak struct serial_device *default_serial_console(void)
 int mxc_serial_setbrg(struct udevice *dev, int baudrate)
 {
 	struct mxc_serial_plat *plat = dev_get_plat(dev);
-	u32 clk = imx_get_uartclk();
+	u32 clk = 80000000;
 
 	_mxc_serial_setbrg(plat->reg, clk, baudrate, plat->use_dte);
 
